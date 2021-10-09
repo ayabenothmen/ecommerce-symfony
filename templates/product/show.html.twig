@@ -1,0 +1,149 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{product.name}}
+	- E-chry
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-5">
+			<img src="/uploads/{{ product.illustration }}" alt="{{product.name}}" class="img-fluid">
+		</div>
+		<div class="col-md-7 my-auto">
+			<h3>{{product.name}}</h3>
+			<p>{{product.subtitle}}</p>
+			<span class="product-page-price">{{(product.price /100) |number_format(2, ',', '.')}}
+				dt</span>
+			<hr>
+			<p>{{product.description}}</p>
+			<a href="{{path('add_to_cart',{ 'id' :product.id})}}" class="btn btn-danger">Ajouter au panier</a>
+      </div>
+
+         {% set max = product.price / 100 %}
+                {% set status = false %}
+                    {% for auc in auctions %}
+                        {% if auc.status == 1 %}
+                            {% set status = true %}
+                        {% endif %}
+                        {% if auc.bid >= max %}
+                            {% set max = auc.bid %}
+                            {% set owner = auc.owner %}
+                        {% endif %}
+                    {%endfor%}
+			<hr>
+           <div class="col-md-3 my-auto">
+			<form class="row g-5" action="{{path('auction',{'id':product.id})}} method=" post">
+				<input type="hidden" class="form-control" id="exampleFormControlInput1" name="slug" value="{{product.slug}}">
+				<input type="hidden" class="form-control" id="exampleFormControlInput1" name="id" value="{{product.id}}">
+				<div class="mb-4">
+					<label for="exampleFormControlInput1" class="form-label">Votre Prix</label>
+					<input type="number" min={{max + 1}} class="form-control" id="exampleFormControlInput1" name="bid" placeholder="votre prix">
+				</div>
+				
+				<div class="mb-4">
+					<label for="exampleFormControlTextarea1" class="form-label">Commentaire</label>
+					<textarea class="form-control" id="exampleFormControlTextarea1" name="comment" rows="3" cols="23" placeholder="votre commentaire"></textarea>
+				</div>
+                <h3>Le prix max de ce produit égale à {{max}}</h3>
+
+				{% if product.owner == user or status %}
+				<div class="mb-4">
+					<button type="submit" disabled class="btn btn-block btn-danger">Valider prix</button>
+				</div>
+				{% else %}
+				<div class="mb-4">
+					<button "{{ path('account_address') }}" type="submit" class="btn btn-block btn-danger">Valider prix</button>
+				</div>
+				{% endif %}
+			</form>
+            </div>
+
+            {% if product.owner == user  %}
+			<div class="col-md-9">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Owner</th>
+                        <th scope="col">Bid</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Comment</th>
+						<th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set total = null %}
+                    {% for auc in auctions %}
+                        <tr>
+                            <td>{{ auc.owner }}</td>
+                            <td>{{ auc.bid }}</td>
+                            <td>{{ auc.date|date('Y-m-d H:i:s')}}</td>
+                            <td>{{ auc.comment}}</td>
+							<td>
+                            <a href="{{path('accept_bid',{'id':auc.id})}}">
+                                Accpet bid
+                            </a>
+                            </td>
+                        </tr>
+                    </br>
+                    <small></small>
+                </tbody>
+            </td>
+            
+        </tr>
+ 
+    {% endfor %}
+    </table>
+    </div>
+       {% else %}
+		<div class="col-md-9">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Owner</th>
+                        <th scope="col">Bid</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Comment</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set total = null %}
+                    {% for auc in auctions %}
+                        <tr>
+                            <td>{{ auc.owner }}</td>
+                            <td>{{ auc.bid }}</td>
+                            <td>{{ auc.date|date('Y-m-d H:i:s')}}</td>
+                            <td>{{ auc.comment}}</td>
+                        </tr>
+                    </br>
+                    <small></small>
+                </tbody>
+            </td>
+            
+        </tr>
+ 
+    {% endfor %}
+    </table>
+    </div>
+	{% endif %}
+
+ <hr>
+ <div class="center">
+ <center>
+    <div class="col-md-10 my-auto">
+        <h3>Nos meilleurs ventes</h3>
+        <p>Découvrez les articles les plus vendus.</p>
+    </div>
+</center>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-3 center" >
+                {% include 'product/single_product.html.twig' %}
+            </div>    
+        {% endfor %}
+    </div><!-- /.row -->
+</div>
+        
+{% endblock %}
+

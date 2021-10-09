@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="la boutique qui vend tous ce qui est made en Tunisie">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>{% block title %} E_chry {% endblock %} </title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{asset('assets/css/echry.css')}}" rel="stylesheet">
+    <!--<script src="https://kit.fontawesome.com/a81368914c.js"></script>!-->
+    <link href="{{asset('assets/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" >
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="{{ asset('assets/css/carousel.css') }}" rel="stylesheet">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="{{ path('home') }}">E_chry</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ path('products') }}">Nos produits</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{path('info')}}">Qui sommes-nous ?</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ path('contact') }}">Contact</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ path('user') }}">Produits Encheres</a>
+                </li>
+            </ul>
+            <div class="navbar-item-custom">
+                {% if app.user %}
+                    <a href="{{ path('account')}}">Mon Compte <small> ({{ app.user.firstname }})</small> </a> | <a href="{{ path('app_logout')}}"> Deconnexion</a>
+                {% else %}
+                    <a href="{{ path('app_login')}}">Connexion</a> | <a href="{{ path('register')}}">Inscription</a>
+                {% endif %}
+            </div>
+            <a href="{{ path('cart') }}">
+                <img src="{{ asset('assets/img/shopping-cart.png') }}" class="cart-icon" alt="Mon panier">
+            </a>
+        </div>
+    </nav>
+</header>
+
+<main role="main">
+
+    {% if block('carousel') is defined %}
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+         {% for key,header in headers %}
+            <li data-target="#myCarousel" data-slide-to="{{ key }}" {% if key == 0 %} class="active"{% endif %}></li>
+         {% endfor %}   
+        </ol>
+        <div class="carousel-inner">
+        {% for key,header in headers %}
+            <div class="carousel-item {% if key == 0 %} active {% endif %}"style="background: url('/uploads/{{ header.illustration }}'); background-size:cover;">
+                <div class="container">
+                    <div class="carousel-caption text-left">
+                        <h1 style="color:#4e2b2b;">{{header.title}}</h1>
+                        <p>{{header.content}}</p>
+                        <p><a class="btn btn-lg btn-danger" href="{{ header.btnUrl }}" role="button">{{ header.btnTitle }}</a></p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+         
+        </div>
+        <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    {% endif %}
+
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing {% if block('carousel') is not defined %}mt-5{% endif %}">
+
+       {% block content %}
+       {% endblock %}
+
+    <!-- FOOTER -->
+  <!--  <footer class="footer-custom">
+    
+        <p>&copy; 2020-2021 E_chry <br>
+        <small>La boutique est 100% made in Tunisie<br>
+        <a href="#">Privacy</a> . <a href="#">Terms</a></p></small>
+        
+    </footer>!-->
+    </main>
+    <br><br><br><br><br><br><br><br><br><br>
+    <div id="footer">
+       <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-md-3">
+               <h4>Pages</h4>
+                <ul>
+                    <li><a href="{{ path('products') }}">Nos produits</a></li>
+                    <li><a href="{{path('info')}}">Qui sommes-nous?</a></li>
+                    <li><a href="{{ path('contact') }}">Contact</a></li>
+                </ul>
+                
+            </div>
+            
+            <div class="com-sm-6 col-md-3">
+                
+                <h4>Section Utilisateur</h4>
+                <li><a href="{{ path('register')}}">S'inscrire</a></li>
+                <li><a href="terms.php">Termes et Conditions</a></li>
+               
+                
+            </div>
+            
+            <div class="col-sm-6 col-md-3">
+                
+                <h4>Trouve Nous</h4>
+                
+                <p>
+                    
+                    <strong>E-chry</strong>
+                    <br/>+216 22 300 500
+                    <br/>echry.tunisie@gmail.com
+                    
+                    
+                </p>
+                
+                
+            </div>
+            
+            <div class="col-sm-6 col-md-3">
+                
+                <h4>Rester En Contact.</h4>
+                
+                <p class="social">
+               
+                    <a href="https://www.facebook.com/">
+                    <img src="{{ asset('assets/img/facebook.png') }}" class="fa fa-facebook" alt="Mon panier"></a>
+                    <a href="https://twitter.com/" >
+                    <img src="{{ asset('assets/img/twitter.png') }}" class="fa fa-twitter" alt="Mon panier"></a>
+                    <a href="https://www.instagram.com/">
+                     <img src="{{ asset('assets/img/instagram.png') }}" class="fa fa-instagram" alt="Mon panier"></a>
+                    <a href="#" class="fa fa-envelope">
+                    <img src="{{ asset('assets/img/google-plus.png') }}" class="fa fa-google-plus" alt="Mon panier"></a>
+                    <a href="https://mail.google.com/" class="fa fa-envelope">
+                    <img src="{{ asset('assets/img/email.png') }}" class="fa fa-enveloppe" alt="Mon panier"></a>
+                </p>
+                
+                </div>
+                
+                <div class="col-lg-12">
+                <hr>
+               <p class="pull-left">
+                &copy; 2021 E_CHRY  Tous droits réservés Politique de Confidentialité</p>
+                
+            </div>
+
+            </div>
+        </div>
+      </div>
+     
+</div>
+ 
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="{{ asset('assets/js/bootstrap.bundle.js') }}"></script>
+</body>
+</html>
